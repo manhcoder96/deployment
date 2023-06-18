@@ -20,10 +20,6 @@ jobs:
           command: bundle install
           working_directory: android
       - run:
-          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-          command: sudo chmod +x ./gradlew
-          working_directory: android
-      - run:
           command: bundle exec fastlane distribute
           working_directory: android
 
