@@ -1,34 +1,33 @@
-version: 2.1
-
-orbs:
-  android: circleci/android@1.0.3
+executors:
+  android:
+    docker:
+      - image: cimg/android:2022.06
 
 jobs:
-  distribute-firebase:
-
-  executor:
-    name: android/android-machine
-
+  # ------------ Android ------------
+  build-firebase-android:
+    executor: android
     steps:
       - checkout
+      - flutter-orb/install_sdk_and_pub:
+          flutter_version: 3.7.5
       - run:
-          command: ./gradlew build
-          working_directory: android
-      - run:
-          name: Install fastlane
           command: bundle install
           working_directory: android
       - run:
-          name: Execute fastlane
           command: bundle exec fastlane distribute
           working_directory: android
 
+orbs:
+  flutter-orb: circleci/flutter@1.1.0
+
+version: 2.1
+
 workflows:
-  distribute-firebase: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  build-app:
     jobs:
-      - distribute-firebase:
+      - build-firebase-android:
           filters:
             branches:
               only:
-                - develop
+                - main
