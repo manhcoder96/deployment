@@ -92,3 +92,7 @@ jobs:
           root: ./
           paths:
             - ./
+ workflows:
+        build:
+          jobs:
+            - install_and_decrypt
