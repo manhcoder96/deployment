@@ -42,6 +42,12 @@ jobs:
   install_and_decrypt:
     description: Install and set up git secret, then reveal the secrets
     executor: git_secret
+    parameters:
+      working_directory:
+        type: string
+        default: ~
+        description: working directory of the job
+    working_directory: << parameters.working_directory >>
     steps:
       - install_git_secret
       - import_gpg_key
