@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # flutter-orb: circleci/flutter@1.1.0
-  git-secret: lyvly/git-secret@1
+  git-secret: lyvly/git-secret@0.1.0
 
 executors:
   git_secret:
