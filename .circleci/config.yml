@@ -15,6 +15,8 @@ jobs:
     executor: android
     steps:
       - checkout
+      - git-secret/install_and_decrypt:
+        working_directory: public_keys
       - flutter-orb/install_sdk_and_pub:
           flutter_version: 3.7.5
       - run:
@@ -30,10 +32,8 @@ jobs:
 workflows:
   build-app:
     jobs:
-      - git-secret/install_and_decrypt:
-
-      # - build-firebase-android:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
+      - build-firebase-android:
+          filters:
+            branches:
+              only:
+                - develop
