@@ -1,17 +1,7 @@
+# This code is licensed from CircleCI to the user under the MIT license.
+# See here for details: https://circleci.com/developer/orbs/licensing
 version: 2.1
-
-orbs:
-  flutter-orb: circleci/flutter@1.1.0
-  git-secret: lyvly/git-secret@0.1.0
-
-executors:
-  git_secret:
-    description: Job config
-    docker:
-      - image: circleci/node:10.16.3
-  # android:
-  #   docker:
-  #     - image: cimg/android:2022.06
+description: Use git-secret
 
 commands:
   install_git_secret:
@@ -37,52 +27,130 @@ commands:
     steps:
       - run: git secret reveal -f
 
+executors:
+  default:
+    description: Job config
+    docker:
+      - image: circleci/node:10.16.3
+
 jobs:
-  # ------------ REVEAL GIT SECRET ------------
   install_and_decrypt:
     description: Install and set up git secret, then reveal the secrets
-    executor: git_secret
+    executor: default
     parameters:
       working_directory:
         type: string
         default: ~
         description: working directory of the job
+
     working_directory: << parameters.working_directory >>
     steps:
+      - attach_workspace:
+          at: ./
       - install_git_secret
       - import_gpg_key
       - reveal_secrets
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
 
-  # # ------------ Android ------------
-  # build-firebase-android:
-  #   executor: android
-  #   steps:
-  #     - checkout
-  #     - flutter-orb/install_sdk_and_pub:
-  #         flutter_version: 3.7.5
-  #     - run:
-  #         command: flutter build apk
-  #         working_directory: android
-  #     - run:
-  #         command: bundle install
-  #         working_directory: android
-  #     - run:
-  #         command: bundle exec fastlane distribute
-  #         working_directory: android
+examples:
+  default:
+    description:
+    usage:
+      version: 2.1
+      orbs:
+        git-secret: lyvly/git-secret@1
+      workflows:
+        build:
+          jobs:
+            - git-secret/install_and_decrypt
+# version: 2.1
 
-workflows:
-  build:
-    jobs:
-      - git-secret/install_and_decrypt:
-          working_directory: ~
-          filters:
-            branches:
-              only:
-                - develop
-  # build-app:
-  #   jobs:
-  #     - flutter-orb/build-firebase-android:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - develop
+# orbs:
+#   flutter-orb: circleci/flutter@1.1.0
+#   git-secret: lyvly/git-secret@0.1.0
+
+# executors:
+#   git_secret:
+#     description: Job config
+#     docker:
+#       - image: circleci/node:10.16.3
+#   # android:
+#   #   docker:
+#   #     - image: cimg/android:2022.06
+
+# commands:
+#   install_git_secret:
+#     description: Install git secret cli
+#     steps:
+#       - run: sudo apt-get update && sudo apt-get install apt-transport-https
+#       - run: echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
+#       - run: wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
+#       - run: sudo apt-get update && sudo apt-get install git-secret
+
+#   import_gpg_key:
+#     description: Import gpg key from env var
+#     parameters:
+#       variable_name:
+#         type: env_var_name
+#         default: "manhcoder96" # TODO: pass through job
+#         description: environment variable containing gpg key
+#     steps:
+#       - run: echo -e "$<< parameters.variable_name >>" | gpg --import
+
+#   reveal_secrets:
+#     description: Reveal the secrets
+#     steps:
+#       - run: git secret reveal -f
+
+# jobs:
+#   # ------------ REVEAL GIT SECRET ------------
+#   install_and_decrypt:
+#     description: Install and set up git secret, then reveal the secrets
+#     executor: git_secret
+#     parameters:
+#       working_directory:
+#         type: string
+#         default: ~
+#         description: working directory of the job
+#     working_directory: << parameters.working_directory >>
+#     steps:
+#       - install_git_secret
+#       - import_gpg_key
+#       - reveal_secrets
+
+#   # # ------------ Android ------------
+#   # build-firebase-android:
+#   #   executor: android
+#   #   steps:
+#   #     - checkout
+#   #     - flutter-orb/install_sdk_and_pub:
+#   #         flutter_version: 3.7.5
+#   #     - run:
+#   #         command: flutter build apk
+#   #         working_directory: android
+#   #     - run:
+#   #         command: bundle install
+#   #         working_directory: android
+#   #     - run:
+#   #         command: bundle exec fastlane distribute
+#   #         working_directory: android
+
+# workflows:
+#   build:
+#     jobs:
+#       - git-secret/install_and_decrypt:
+#           working_directory: ~
+#           filters:
+#             branches:
+#               only:
+#                 - develop
+#   # build-app:
+#   #   jobs:
+#   #     - flutter-orb/build-firebase-android:
+#   #         filters:
+#   #           branches:
+#   #             only:
+#   #               - develop
