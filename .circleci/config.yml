@@ -76,8 +76,6 @@ jobs:
   install_and_decrypt:
     description: Install and set up git secret, then reveal the secrets
     executor: default
-
-    working_directory: << parameters.working_directory >>
     steps:
       - checkout
       - run: cd public_keys
