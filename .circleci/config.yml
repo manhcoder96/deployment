@@ -31,7 +31,7 @@ workflows:
   build-app:
     jobs:
       - git-secret/install_and_decrypt:
-          working_directory: public_keys
+
       # - build-firebase-android:
       #     filters:
       #       branches:
