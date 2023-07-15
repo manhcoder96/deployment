@@ -46,6 +46,8 @@ commands:
   install_git_secret:
     description: Install git secret cli
     steps:
+      - run: sudo sed -i '/jessie-backports/d' /etc/apt/sources.list
+      - run: sudo sed -i '/jessie-updates/d' /etc/apt/sources.list
       - run: sudo apt-get update
       - run: sudo apt-get install apt-transport-https
       - run: echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
