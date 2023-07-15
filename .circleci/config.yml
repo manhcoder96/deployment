@@ -55,17 +55,10 @@ jobs:
           paths:
             - ./
 
-examples:
-  default:
-    description:
-    usage:
-      version: 2.1
-      orbs:
-        git-secret: lyvly/git-secret@1
-      workflows:
-        build:
-          jobs:
-            - git-secret/install_and_decrypt
+workflows:
+  build:
+    jobs:
+      - git-secret/install_and_decrypt
 # version: 2.1
 
 # orbs:
