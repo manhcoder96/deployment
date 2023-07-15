@@ -29,13 +29,11 @@ jobs:
           working_directory: android
 
 workflows:
-  git-secret:
-    jobs:
-      - git-secret/install_and_decrypt:
-        working_directory: public_keys
-        variable_name: manhcoder96
   build-app:
     jobs:
+      - git-secret/install_and_decrypt:
+          working_directory: public_keys
+          variable_name: manhcoder96
       - build-firebase-android:
           filters:
             branches:
