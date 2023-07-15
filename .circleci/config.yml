@@ -46,10 +46,10 @@ commands:
   install_git_secret:
     description: Install git secret cli
     steps:
-      - run: sudo apt-get update && sudo apt-get install apt-transport-https
+      - run: apt-get update && apt-get -y install apt-transport-https curl
       - run: echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
       - run: wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
-      - run: sudo apt-get update && sudo apt-get install git-secret
+      - run: apt-get update && apt-get install git-secret
 
   import_gpg_key:
     description: Import gpg key from env var
