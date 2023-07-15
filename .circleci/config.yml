@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   flutter-orb: circleci/flutter@1.1.0
+  git-secret: lyvly/git-secret@1
 
 executors:
   git_secret:
@@ -64,10 +65,12 @@ jobs:
           working_directory: android
 
 workflows:
+  build:
+    jobs:
+      - git-secret/install_and_decrypt:
   build-app:
     jobs:
-      - install_and_decrypt:
-      - build-firebase-android:
+      - flutter-orb/build-firebase-android:
           filters:
             branches:
               only:
