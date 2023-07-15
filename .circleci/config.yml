@@ -27,7 +27,7 @@ commands:
     parameters:
       variable_name:
         type: env_var_name
-        default: manhcoder96 # TODO: pass through job
+        default: "manhcoder96" # TODO: pass through job
         description: environment variable containing gpg key
     steps:
       - run: echo -e "$<< parameters.variable_name >>" | gpg --import
