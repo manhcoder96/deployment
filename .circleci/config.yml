@@ -84,6 +84,7 @@ jobs:
 
     working_directory: << parameters.working_directory >>
     steps:
+      - checkout
       - attach_workspace:
           at: ./
       - install_git_secret
