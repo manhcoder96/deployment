@@ -68,6 +68,10 @@ workflows:
   build:
     jobs:
       - git-secret/install_and_decrypt:
+          filters:
+            branches:
+              only:
+                - develop
   # build-app:
   #   jobs:
   #     - flutter-orb/build-firebase-android:
