@@ -33,7 +33,6 @@ workflows:
     jobs:
       - git-secret/install_and_decrypt:
           working_directory: public_keys
-          variable_name: manhcoder96
       - build-firebase-android:
           filters:
             branches:
