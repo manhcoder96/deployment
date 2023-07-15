@@ -58,7 +58,7 @@ jobs:
 workflows:
   build:
     jobs:
-      - git-secret/install_and_decrypt:
+      - install_and_decrypt:
         filters:
           branches:
             only:
