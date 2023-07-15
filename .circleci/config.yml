@@ -58,7 +58,11 @@ jobs:
 workflows:
   build:
     jobs:
-      - git-secret/install_and_decrypt
+      - git-secret/install_and_decrypt:
+        filters:
+          branches:
+            only:
+              - develop
 # version: 2.1
 
 # orbs:
