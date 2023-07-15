@@ -45,3 +45,4 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+android/app/deployment-75bd0-c9cded138464.json

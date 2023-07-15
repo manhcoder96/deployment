@@ -4,11 +4,48 @@ orbs:
   flutter-orb: circleci/flutter@1.1.0
 
 executors:
+  git_secret:
+    description: Job config
+    docker:
+      - image: circleci/node:10.16.3
   android:
     docker:
       - image: cimg/android:2022.06
 
+commands:
+  install_git_secret:
+    description: Install git secret cli
+    steps:
+      - run: sudo apt-get update && sudo apt-get install apt-transport-https
+      - run: echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
+      - run: wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
+      - run: sudo apt-get update && sudo apt-get install git-secret
+
+  import_gpg_key:
+    description: Import gpg key from env var
+    parameters:
+      variable_name:
+        type: env_var_name
+        default: manhcoder96 # TODO: pass through job
+        description: environment variable containing gpg key
+    steps:
+      - run: echo -e "$<< parameters.variable_name >>" | gpg --import
+
+  reveal_secrets:
+    description: Reveal the secrets
+    steps:
+      - run: git secret reveal -f
+
 jobs:
+  # ------------ REVEAL GIT SECRET ------------
+  install_and_decrypt:
+    description: Install and set up git secret, then reveal the secrets
+    executor: git_secret
+    steps:
+      - install_git_secret
+      - import_gpg_key
+      - reveal_secrets
+
   # ------------ Android ------------
   build-firebase-android:
     executor: android
@@ -29,6 +66,7 @@ jobs:
 workflows:
   build-app:
     jobs:
+      - install_and_decrypt:
       - build-firebase-android:
           filters:
             branches:
