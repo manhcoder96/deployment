@@ -47,7 +47,7 @@ jobs:
           command: flutter build apk
           working_directory: android
       - run:
-          command: fastlane distribute
+          command: bundle exec fastlane distribute
           working_directory: android
 
 workflows:
