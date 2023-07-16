@@ -58,7 +58,6 @@ commands:
         description: environment variable containing gpg key
     steps:
       - run: echo -e "-----BEGIN PGP PRIVATE KEY BLOCK-----
-
 lIYEZLJtIRYJKwYBBAHaRw8BAQdA4nMwKjbkPrcMPk0VILLTSxlloLbOg17+O3IQ
 FqVqNZ/+BwMCSYq1jHkYjgn7V+obTKTLsR75daqFRGj9s58PNAf8TtFzFI2LDadL
 XvBTwHQWQbKJfrb3tMQvv5FMIkjuLmiwcKAwFSzE04o4OZltRssga7QcTWFuaCA8
