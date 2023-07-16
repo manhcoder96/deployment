@@ -51,13 +51,8 @@ commands:
 
   import_gpg_key:
     description: Import gpg key from env var
-    parameters:
-      variable_name:
-        type: env_var_name
-        default: "manhcoder96" # TODO: pass through job
-        description: environment variable containing gpg key
     steps:
-      - run: echo -e "-----BEGIN PGP PRIVATE KEY BLOCK-----,,lIYEZLJtIRYJKwYBBAHaRw8BAQdA4nMwKjbkPrcMPk0VILLTSxlloLbOg17+O3IQ,FqVqNZ/+BwMCs+EZ0eFUMrb7zQYvWT8DzJ6wQbLcRDMYe6U8VorAwqOpTD3XT/Ci,5zK6EUZqxIB8fQwauNeGMrdSi6fpRSWqeOMPhZ8YU9yLbHDBUcdr+bQcTWFuaCA8,bWFuaGNvZGVyOTZAZ21haWwuY29tPoiZBBMWCgBBFiEEMv1SQuZDNenOthXPjPhP,GG/166YFAmSybSECGwMFCQWjmoAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AA,CgkQjPhPGG/166aZNQD/QfpX3so4Xb9IfuTMQqkKv0C01t9BmFi04emFEmnWd2MB,AJBlUv83XMcUMkrVc2rssYxeKU91Kg6UrszZXJnTnI8LnIsEZLJtIRIKKwYBBAGX,VQEFAQEHQD1Ofx6ps8rnpX08HwaLwyYJ6ARVozAgCA/CQYffZgYnAwEIB/4HAwIF,vJoDQ3Dqa/tGun5dUBk96WZ74CGo58VK4J656lvQ5MVidGuh7PQO8SKpgKHyCX45,rfMumZKXOZ8ecHy4eKGZP1L+oYB6K3C1EV86m1J/iH4EGBYKACYWIQQy/VJC5kM1,6c62Fc+M+E8Yb/XrpgUCZLJtIQIbDAUJBaOagAAKCRCM+E8Yb/XrpmHkAP9cLKaN,ITGCPKOSgfc26ysPSzeraRYozgN+plOmNaYcTgEAglPShtVqWG+V1Tz9Iun6dzYy,wQi1rbHosOeKka27ewQ=,=VwZq,-----END PGP PRIVATE KEY BLOCK-----,"| tr ',' '\n'> ./private_key.gpg
+      - run: echo -e "$GITHUB_SECRET_KEY"| tr ',' '\n'> ./private_key.gpg
       - run: gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
 
   reveal_secrets:
