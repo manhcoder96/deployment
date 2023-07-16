@@ -1,71 +1,12 @@
-version: 2.1
-
-orbs:
-  flutter-orb: circleci/flutter@1.1.0
-
-executors:
-  android:
-    docker:
-      - image: cimg/android:2022.06
-
-commands:
-  install_git_secret:
-    description: Install git secret cli
-    steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y git-secret
-
-  import_gpg_key:
-    description: Import gpg key from env var
-    steps:
-      - run: echo -e "$GITHUB_SECRET_KEY"| tr ',' '\n'> ./private_key.gpg
-      - run: gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
-
-  reveal_secrets:
-    description: Reveal the secrets
-    steps:
-      - run: git secret reveal -p "$GITHUB_SECRET_PASSPHRASE"
-
-jobs:
-  # ------------ Android ------------
-  build-firebase-android:
-    executor: android
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ./
-      - install_git_secret
-      - import_gpg_key
-      - reveal_secrets
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - ./
-      - flutter-orb/install_sdk_and_pub:
-          flutter_version: 3.7.5
-      - run:
-          command: flutter build apk
-          working_directory: android
-      - run:
-          command: bundle install
-          working_directory: android
-      - run:
-          command: bundle exec fastlane distribute
-          working_directory: android
-
-workflows:
-  build-app:
-    jobs:
-      - build-firebase-android:
-          filters:
-            branches:
-              only:
-                - develop
-# This code is licensed from CircleCI to the user under the MIT license.
-# See here for details: https://circleci.com/developer/orbs/licensing
-
 # version: 2.1
-# description: Use git-secret
+
+# orbs:
+#   flutter-orb: circleci/flutter@1.1.0
+
+# executors:
+#   android:
+#     docker:
+#       - image: cimg/android:2022.06
 
 # commands:
 #   install_git_secret:
@@ -84,16 +25,11 @@ workflows:
 #     description: Reveal the secrets
 #     steps:
 #       - run: git secret reveal -p "$GITHUB_SECRET_PASSPHRASE"
-# executors:
-#   default:
-#     description: Job config
-#     docker:
-#       - image: circleci/python:3.8
 
 # jobs:
-#   install_and_decrypt:
-#     description: Install and set up git secret, then reveal the secrets
-#     executor: default
+#   # ------------ Android ------------
+#   build-firebase-android:
+#     executor: android
 #     steps:
 #       - checkout
 #       - attach_workspace:
@@ -105,11 +41,75 @@ workflows:
 #           root: ./
 #           paths:
 #             - ./
+#       - flutter-orb/install_sdk_and_pub:
+#           flutter_version: 3.7.5
+#       - run:
+#           command: flutter build apk
+#           working_directory: android
+#       - run:
+#           command: bundle install
+#           working_directory: android
+#       - run:
+#           command: bundle exec fastlane distribute
+#           working_directory: android
+
 # workflows:
-#   build:
+#   build-app:
 #     jobs:
-#       - install_and_decrypt:
+#       - build-firebase-android:
 #           filters:
 #             branches:
 #               only:
 #                 - develop
+# This code is licensed from CircleCI to the user under the MIT license.
+# See here for details: https://circleci.com/developer/orbs/licensing
+
+version: 2.1
+description: Use git-secret
+
+commands:
+  install_git_secret:
+    description: Install git secret cli
+    steps:
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y git-secret
+
+  import_gpg_key:
+    description: Import gpg key from env var
+    steps:
+      - run: echo -e "$GITHUB_SECRET_KEY"| tr ',' '\n'> ./private_key.gpg
+      - run: gpg --batch --yes --pinentry-mode loopback --import private_key.gpg
+
+  reveal_secrets:
+    description: Reveal the secrets
+    steps:
+      - run: git secret reveal -p "$GITHUB_SECRET_PASSPHRASE"
+executors:
+  default:
+    description: Job config
+    docker:
+      - image: cimg/android:2022.06
+
+jobs:
+  install_and_decrypt:
+    description: Install and set up git secret, then reveal the secrets
+    executor: default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./
+      - install_git_secret
+      - import_gpg_key
+      - reveal_secrets
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+workflows:
+  build:
+    jobs:
+      - install_and_decrypt:
+          filters:
+            branches:
+              only:
+                - develop
