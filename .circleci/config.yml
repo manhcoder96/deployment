@@ -57,7 +57,7 @@ commands:
         default: "manhcoder96" # TODO: pass through job
         description: environment variable containing gpg key
     steps:
-      - run: echo -e "$<< parameters.variable_name >>" | gpg --import
+      - run: echo -e "$<< parameters.variable_name >>" | gpg --import public_keys/*
 
   reveal_secrets:
     description: Reveal the secrets
