@@ -79,7 +79,6 @@ jobs:
     executor: default
     steps:
       - checkout
-      - run: cd public_keys
       - attach_workspace:
           at: ./
       - install_git_secret
