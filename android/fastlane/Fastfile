@@ -45,7 +45,7 @@ platform :android do
           service_credentials_file: "./app/deployment-75bd0-c9cded138464.json",
           apk_path: "../build/app/outputs/apk/release/app-release.apk",
           groups_file: "./release/groups.txt",
-          release_notes_file: "./release/notes.txt"
+          release_notes_file: "./release/release-notes.txt"
       )
   end
 end
