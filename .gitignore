@@ -46,3 +46,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 android/app/deployment-75bd0-c9cded138464.json
+ios/fastlane/AuthKey_756MJUHN5N.p8

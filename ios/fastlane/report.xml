@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000272">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: is_ci" time="0.000191">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: app_store_connect_api_key" time="0.003009">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: match" time="8.276836">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: gym" time="57.270848">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: pilot" time="110.898729">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

@@ -1,0 +1,46 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    if is_ci
+      setup_circle_ci
+    end
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    app_store_connect_api_key(
+      key_id: "756MJUHN5N",
+      issuer_id: "c2b96669-8d65-4b74-bad6-8ab1353b7ce2",
+      key_filepath: "fastlane/AuthKey_756MJUHN5N.p8",
+    )
+    match(
+      type: "appstore",
+      app_identifier: "com.deployment.test",
+    )
+    gym(
+      export_method: "app-store"
+    )
+    pilot(
+      app_identifier: "com.deployment.test",
+      skip_submission: true,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+end
