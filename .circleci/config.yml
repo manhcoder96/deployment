@@ -17,8 +17,7 @@ commands:
   install_git_secret:
     description: Install git secret cli
     steps:
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y git-secret
+      - run: brew install git-secret
 
   # Import gpg key from env var
   import_gpg_key:
