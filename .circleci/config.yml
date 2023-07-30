@@ -57,6 +57,9 @@ jobs:
       - install_git_secret
       - import_gpg_key
       - reveal_secrets
+      - add_ssh_keys:
+          fingerprints:
+            - "7d:12:83:07:5a:b2:2f:f3:1e:30:16:c9:57:df:a0:ed"
       - flutter-orb/install_sdk_and_pub:
           flutter_version: 3.7.5
       - install_bundler
