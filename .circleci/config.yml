@@ -6,9 +6,10 @@ orbs:
 
 #-------------------------------------------Executors--------------------------------------
 executors:
-  android:
-    docker:
-      - image: cimg/android:2023.07
+  macos:
+    macos:
+      xcode: 14.3.0
+    resource_class: macos.x86.medium.gen2
 
 #-------------------------------------------Commands--------------------------------------
 commands:
@@ -32,35 +33,26 @@ commands:
     steps:
       - run: git secret reveal -p "$GITHUB_SECRET_PASSPHRASE"
 
-  # Build the APK file
-  build_apk:
-    description: Build APK
-    steps:
-      - run:
-          command: flutter build apk
-          working_directory: android
-
   # Install Bundler
   install_bundler:
-    description: Install bundler
+    description: Install bundler & Pod install
     steps:
       - run:
-          command: sudo bundle install
-          working_directory: android
+          command: sudo bundle install && pod install
+          working_directory: ios
 
   # Distribute Firebase
-  distribute_firebase:
-    description: Distribute APK to Firebase
+  upload_to_testflight:
+    description: Upload to Testflight
     steps:
       - run:
-          command: bundle exec fastlane distribute
-          working_directory: android
+          command: bundle exec fastlane beta
+          working_directory: ios
 
 #-------------------------------------------Jobs--------------------------------------
 jobs:
-  # ------------ Android ------------
-  build-firebase-android:
-    executor: android
+  build-ios:
+    executor: macos
     steps:
       - checkout
       - install_git_secret
@@ -68,18 +60,17 @@ jobs:
       - reveal_secrets
       - flutter-orb/install_sdk_and_pub:
           flutter_version: 3.7.5
-      - build_apk
       - install_bundler
-      - distribute_firebase
+      - upload_to_testflight
 
 #-------------------------------------------Workflows--------------------------------------
 workflows:
   build-app:
     jobs:
-      - build-firebase-android:
+      - build-ios:
           filters:
             branches:
               only:
-                - develop
+                - ios
 #-------------------------------------------End--------------------------------------
 
